@@ -69,3 +69,4 @@ def generate_audio(text, voice_id):
     )
     # Return generated audio
     return audio
+

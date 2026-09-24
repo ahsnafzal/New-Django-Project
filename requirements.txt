@@ -2,3 +2,4 @@ Django
 djangorestframework
 elevenlabs
 python-dotenv
+better-profanity

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from .services import save_to_db, generate_audio
 from .serializers import VoiceSerializer
-
+from better_profanity import profanity
 from rest_framework.response import Response
 from .models import Voice
 from django.http import StreamingHttpResponse
@@ -49,6 +49,12 @@ class GenerateAudioView(APIView):
         
         # Get voice ID the user want to use audio
         voice_id = request.data.get("voice_id")
+        
+        
+        if profanity.contains_profanity(text):
+            return Response(
+                {"error": "Inappropriate words detected"},
+                status=400)
         
         audio = generate_audio(text, voice_id)
         

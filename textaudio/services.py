@@ -1,7 +1,7 @@
 from config.settings import ELEVEN_LABS_API_KEY
-
+from better_profanity import profanity
 from elevenlabs.client import ElevenLabs
-from .models import Voice
+from .models import Voice, ProfanityWord
 
 
 # Creates an ElevenLabs API client using the API key stored in Django settings
@@ -70,3 +70,13 @@ def generate_audio(text, voice_id):
     # Return generated audio
     return audio
 
+
+
+# Function to Load custom bad words from DB 
+def load_custom_words():
+    words = list(
+        ProfanityWord.objects.filter(is_active=True).values_list("word", flat=True)
+    )
+    # Added the bad words in better-profanity to use them too
+    profanity.add_censor_words(words)
+    

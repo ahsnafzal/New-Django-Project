@@ -6,6 +6,7 @@ from better_profanity import profanity
 from rest_framework.response import Response
 from .models import Voice
 from django.http import StreamingHttpResponse
+from .services import load_custom_words
 
 # Create your views here.
 
@@ -42,6 +43,8 @@ class VoicesListView(APIView):
         
 ##### View Cretaed to call generated auid from services ########
 class GenerateAudioView(APIView):
+    
+    
     def post(self, request):
         
         # Get text from user he want to convert to audio
@@ -50,6 +53,8 @@ class GenerateAudioView(APIView):
         # Get voice ID the user want to use audio
         voice_id = request.data.get("voice_id")
         
+        # called this function to use words we stored in better-profanity 
+        load_custom_words()
         
         if profanity.contains_profanity(text):
             return Response(
